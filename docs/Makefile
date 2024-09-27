@@ -1,3 +1,3 @@
 build:
 	cp ../library/scripts/Deck.hx ./Deck.ts
-	npx typedoc Deck.ts --skipErrorChecking --jsDocCompatibility true
+	npx typedoc Deck.ts --skipErrorChecking --jsDocCompatibility true --out Deck
