@@ -1,0 +1,13 @@
+{
+  "export": true,
+  "guid": "a5cdbd36-0f72-4e38-9ca8-63f6193eb53c",
+  "id": "assisttemplateHitboxStats",
+  "language": "hscript",
+  "pluginMetadata": {
+  },
+  "plugins": [
+  ],
+  "tags": [
+  ],
+  "version": 1
+}

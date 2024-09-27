@@ -1,0 +1,13 @@
+{
+  "export": true,
+  "guid": "023c92e6-315f-4f1f-860e-bf494a401880",
+  "id": "assisttemplateAnimationStats",
+  "language": "hscript",
+  "pluginMetadata": {
+  },
+  "plugins": [
+  ],
+  "tags": [
+  ],
+  "version": 1
+}

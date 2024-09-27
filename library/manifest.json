@@ -1,0 +1,40 @@
+{
+  "resourceId": "fraydeck",
+  "content": [
+    {
+      "id": "fraydeck",
+      "name": "FrayDeck Template",
+      "description": "An example assist character for Fraymakers.",
+      "type": "assist",
+      "objectStatsId": "assisttemplateAssistObjectStats",
+      "animationStatsId": "assisttemplateAnimationStats",
+      "hitboxStatsId": "assisttemplateHitboxStats",
+      "scriptId": "assisttemplateScript",
+      "costumesId": "assisttemplateCostumes",
+      "metadata": {
+        "ui": {
+          "entityId": "menu",
+          "render": {
+            "animation": "assist_full",
+            "animation_icon_no_palette": "assist_css"
+          },
+          "hud": {
+            "animation": "assist_hud"
+          },
+          "css": {
+            "animation": "assist_css",
+            "info": {
+              "game": "Fraymakers",
+              "description": "To perform actions, press the assist button after the deck has been filled."
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "deck",
+      "type": "customGameObject",
+      "scriptId": "deckScript"
+    }
+  ]
+}
