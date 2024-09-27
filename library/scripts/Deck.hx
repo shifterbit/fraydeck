@@ -399,7 +399,7 @@ function init(actions: Array<any>, cooldownSoundId: String) {
     var spriteId: String = "cards";
     var cooldownOverlayId: String = "cards_cooldown";
     var iconsId: String = "card_icons";
-    cooldownSound.set(cooldownSound);
+    cooldownSound.set(cooldownSoundId);
 
     initializeDeck(3, actions, spriteId, cooldownOverlayId, iconsId);
 }
@@ -680,6 +680,7 @@ function update() {
 
 self.exports.createAction = createAction;
 self.exports.initializeDeck = initializeDeck;
+self.exports.init = init;
 
 
 

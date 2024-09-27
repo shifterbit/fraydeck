@@ -20,147 +20,14 @@ var deckResource = match.createCustomGameObject(self.getResource().getContent("d
  * @type {Object} Deck
 
  * @property {function} createAction
- * @property {function} initializeDeck
+ * @property {function} init
  */
 var deck: object = deckResource.exports;
 
 
-/**
- * @type {SpellFunction}
- */
-function castFireball() {
-	var res = self.getResource().getContent("fireball");
-	match.createProjectile(res, self.getOwner());
-	AudioClip.play(self.getResource().getContent("blackMagicSound"));
-}
 
-/** 
- * @type {SpellFunction}
- */
-function castWhirlwind() {
-	var res = self.getResource().getContent("wind_tornado");
-	match.createProjectile(res, self.getOwner());
-	AudioClip.play(self.getResource().getContent("blackMagicSound"));
+// Below are a a list of conditions you can use to set cards, Range Condition being the most basic one you need
 
-}
-
-
-/** 
- * @type {SpellFunction}
- */
-function castIce() {
-	var res = self.getResource().getContent("ice");
-	match.createProjectile(res, self.getOwner());
-	AudioClip.play(self.getResource().getContent("blackMagicSound"));
-
-}
-/** 
- * @type {SpellFunction}
- */
-function castEarth() {
-	var res = self.getResource().getContent("earthspike");
-	match.createProjectile(res, self.getOwner());
-	AudioClip.play(self.getResource().getContent("blackMagicSound"));
-
-
-}
-
-
-function kaiokenMode() {
-	var outerGlow = new GlowFilter();
-	outerGlow.color = 0xFF0000;
-	var middleGlow = new GlowFilter();
-	middleGlow.color = 0xF95D74;
-	var innerGlow = new GlowFilter();
-	innerGlow.color = 0xFFFFFF;
-
-
-	self.getOwner().addFilter(innerGlow);
-	self.getOwner().addFilter(middleGlow);
-	self.getOwner().addFilter(outerGlow);
-	var doubleDamage = function (event: GameObjectEvent) {
-		var baseDamage = event.data.hitboxStats.damage;
-		event.data.hitboxStats.damage = baseDamage * 1.5;
-		self.getOwner().setAssistCharge(0);
-	};
-	self.getOwner().addEventListener(GameObjectEvent.HITBOX_CONNECTED, doubleDamage, { persistent: true });
-	self.addTimer(10, 60, function () {
-		var owner: Character = self.getRootOwner();
-		owner.addDamage(1);
-	});
-
-	self.addTimer(1, 60 * 10, function () {
-		self.getOwner().setAssistCharge(0);
-	});
-
-	self.addTimer(60 * 10, 1, function () {
-		self.getOwner().removeEventListener(GameObjectEvent.HITBOX_CONNECTED, doubleDamage);
-		self.getOwner().removeFilter(outerGlow);
-		self.getOwner().removeFilter(middleGlow);
-		self.getOwner().removeFilter(innerGlow);
-	}, { persistent: true });
-	AudioClip.play(self.getResource().getContent("whiteMagicSound"));
-
-}
-
-function vamparismMode() {
-	var innerGlow = new GlowFilter();
-	innerGlow.color = 0xFFFFFF;
-	var middleGlow = new GlowFilter();
-	middleGlow.color = 0xD7BDE2;
-	var outerGlow = new GlowFilter();
-	outerGlow.color = 0x6c3483;
-	var bat: CustomGameObject = match.createCustomGameObject(self.getResource().getContent("bat"), self.getOwner());
-	bat.playAnimation("idle");
-	bat.setX(self.getOwner().getX());
-
-
-	self.getOwner().addFilter(innerGlow);
-	self.getOwner().addFilter(middleGlow);
-	self.getOwner().addFilter(outerGlow);
-	var drain = function (event: GameObjectEvent) {
-		var baseDamage = event.data.hitboxStats.damage;
-		var foe = event.data.foe;
-		var foeInvincible: Bool = foe.hasBodyStatus(BodyStatus.INVINCIBLE)
-			|| foe.hasBodyStatus(BodyStatus.INVINCIBLE_GRABBABLE)
-			|| foe.hasBodyStatus(BodyStatus.INTANGIBLE);
-		var foeAssistCharge = foe.getAssistContentStat("assistChargeValue");
-		if (foeAssistCharge >= 0 && foeAssistCharge != null && !foeInvincible) {
-			foe.setAssistCharge(foe.getAssistCharge() - ((baseDamage * 1000) / (1000 * foeAssistCharge)));
-		}
-
-
-		if (!foeInvincible) {
-
-			self.getOwner().addDamage(-(1 + (baseDamage * 0.75)));
-		}
-
-
-	};
-
-	self.addTimer(1, 60 * 10, function () {
-		self.getOwner().setAssistCharge(0);
-	});
-	self.getOwner().addEventListener(GameObjectEvent.HIT_DEALT, drain, { persistent: true });
-	self.addTimer(60 * 10, 1, function () {
-		self.getOwner().removeEventListener(GameObjectEvent.HIT_DEALT, drain);
-		bat.destroy();
-		self.getOwner().removeFilter(outerGlow);
-		self.getOwner().removeFilter(middleGlow);
-		self.getOwner().removeFilter(innerGlow);
-	}, { persistent: true });
-	AudioClip.play(self.getResource().getContent("whiteMagicSound"));
-
-
-}
-
-
-/**
- * Creates a range condition
- * @param {Int} lo lower bound
- * @param {Int} hi upper bound
- * @returns {PredicateFunction} predicate
- */
 function rangeCondition(lo: Int, hi: Int) {
 	return function (card: Int) {
 		if (card >= lo && card <= hi) {
@@ -198,7 +65,7 @@ function damageRangeCondition(minDamage: Int, maxDamage: Int, lo: Int, hi: Int) 
 	}
 }
 
-function maxDamageCondition(minDamage: Int, maxDamage: Int, lo: Int, hi: Int) {
+function maxDamageCondition(maxDamage: Int, lo: Int, hi: Int) {
 	var predicate = rangeCondition(lo, hi);
 
 	return function (card) {
@@ -208,7 +75,7 @@ function maxDamageCondition(minDamage: Int, maxDamage: Int, lo: Int, hi: Int) {
 	}
 }
 
-function minDamageCondition(minDamage: Int, maxDamage: Int, lo: Int, hi: Int) {
+function minDamageCondition(minDamage: Int, lo: Int, hi: Int) {
 	var predicate = rangeCondition(lo, hi);
 
 	return function (card) {
@@ -221,20 +88,60 @@ function minDamageCondition(minDamage: Int, maxDamage: Int, lo: Int, hi: Int) {
 
 
 
-var fireball = deck.createAction(castFireball, airRangeCondition(4, 6), 60, "fireball");
-var ice = deck.createAction(castIce, groundRangeCondition(4, 6), 150, "ice");
-var wind_tornado = deck.createAction(castWhirlwind, airRangeCondition(7, 9), 180, "tornado");
-var earthSpike = deck.createAction(castEarth, groundRangeCondition(7, 9), 120, "earth");
-var kaioken = deck.createAction(kaiokenMode, damageRangeCondition(0, 80, 0, 3), 900, "rage");
-var vamparism = deck.createAction(vamparismMode, damageRangeCondition(81, 9999999, 0, 3), 900, "vampire");
+/*
+
+Now for a brief explaination of how to use all this:
+
+First and foremost: Actions themselves are just functions, but wrapped around with some metadata for the system to use
+
+Creating an action would work as follows:
+
+- Write a function that spawns a projectile/causes a status effect etc
+Lets assume you already have that function, lets call it attackWave and assume you've already defined the projectile yourself, 
+either using the projectile creator or manually:
+function attackWave() {
+	match.createProjectile(self.getResource().getContent("assisttemplateProjectile"), self);
+}
+
+Lets say we wanted this to only run when:
+- We have a card thats between 0 and 5
+- Has a cooldown time of 60 frames
+- And has an iconId name of "wave"[1]
+
+var attackWaveAction = deck.createAction(attackWave, rangeCondition(0,5), 60, "wave");
+
+Now lets cover some different cases to get an idea of what else you can do:
+
+- Only usable when damage is 50 or above and with card values between 5 and 9
+var attackWaveActionAbove50Damage = deck.createAction(attackWave, minDamageCondition(50 ,0,5), 60, "wave");
 
 
+- Only usable whilst in the air, but for all cards from 0 to 9
+var attackWaveActionAirOnly = deck.createAction(attackWave, airRangeCondition(9,9), 60, "wave");
 
 
-var initializeDeck = deck.initializeDeck;
+and inside initialise you would simply call it like so to add these all to the deck
+	
+deck.init([attackWaveAction, attackWaveActionAbove50Damage,attackWaveActionAirOnly ], ""); 
+
+Another thing to add would be sound effects, you can optionally add the Id of whatever sound effect you
+wish to play when cooldowns end, I cannot distribute them to you so you would have to 
+get the sounds yourself, but the process is just a matter of setting the Id of said file and passing 
+it as a string  like so:
+
+deck.init([attackWaveAction, attackWaveActionAbove50Damage,attackWaveActionAirOnly ], "soundId"); 
+
+
+[1] As for icons, keep in mind that icons should be added by adding new animation with the iconId being 
+the animation name you set and a single image in the icons.entity file in this project.
+
+TODO: Add proper documentation
+*/
+
 // Runs on object init
 function initialize() {
-	deck.initializeDeck(3, [fireball, wind_tornado, earthSpike, ice, kaioken, vamparism], "cards", "cards_cooldown", "card_icons");
+	deck.init([], ""); // You 
+
 	//	deck.initializeDeck(3, [], "cards", "cards_cooldown", "card_icons");
 
 	// Face the same direction as the user
