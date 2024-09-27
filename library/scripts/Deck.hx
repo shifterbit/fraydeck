@@ -11,7 +11,7 @@ var deckActions: ApiVarArray = self.makeArray([]);
 var currCard: ApiVarInt = self.makeInt(0);
 var iconEventListeners: ApiVarArray = self.makeArray([]);
 var owner: Character = self.getRootOwner();
-var cooldownSound: ApiVarString = self.makeString("")
+var cooldownSound: ApiVarString = self.makeString("");
 
 
 
@@ -236,7 +236,7 @@ function endCoolDown() {
     };
     highlightCurrentCard();
     owner.addEventListener(GameObjectEvent.HIT_DEALT, addCardEvent, { persistent: true });
-    var cooldownSoundId = cooldownSound.get()
+    var cooldownSoundId = cooldownSound.get();
     if (cooldownSoundId != "") {
         AudioClip.play(self.getResource().getContent(cooldownSoundId));
     }
