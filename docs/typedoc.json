@@ -1,0 +1,16 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": [
+		"./Deck.ts",
+	],
+  "name": "Deck",
+  "out": "deck",
+  "defaultCategory": "Internal",
+  "skipErrorChecking": true,
+  "jsDocCompatibility":true,
+  "categorizeByGroup": true,
+  "navigation": {
+	"includeCategories": false,
+	"includeGroups": true
+  }
+}
