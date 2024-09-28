@@ -10,7 +10,7 @@
   "jsDocCompatibility":true,
   "categorizeByGroup": true,
   "navigation": {
-	"includeCategories": false,
+	"includeCategories": true,
 	"includeGroups": true
   }
 }
