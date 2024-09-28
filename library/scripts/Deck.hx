@@ -101,6 +101,7 @@ function createAction(actionFn, predicateFn, cooldownTime: Int, icon: String) {
  * @param {Object} sprite - Raw Sprite Object where the cooldown will be applied
  * @param {function} filterFn - function that returns a cooldown.
  * @returns {FilterSprite} The wrapped cooldown sprite
+ * @group Sprite Wrappers
  */
 function createSpriteWithFilter(sprite: Sprite, filterFn) {
     return {
@@ -116,6 +117,7 @@ function createSpriteWithFilter(sprite: Sprite, filterFn) {
  * @param {Object} sprite - Raw Sprite Object where the cooldown will be applied
  * @param {function} shaderFn - function that returns a cooldown.
  * @returns {ShaderSprite} The wrapped cooldown sprite
+ * @group Sprite Wrappers
  */
 function createSpriteWithShader(sprite: Sprite, shaderFn) {
     return {
@@ -157,6 +159,8 @@ function resizeAndRepositionHUD(element: Sprite, idx: Int, scale: Float, spacing
 /**
  * Applies the filter to a wrapped sprite
  * @param {FilterSprite} spriteObj
+ * @group Sprite Wrappers
+ * @see {@link createSpriteWithShader}
  */
 function applyFilter(spriteObj) {
     var sprite: Sprite = spriteObj.sprite;
@@ -168,6 +172,8 @@ function applyFilter(spriteObj) {
 /**
  * Applies the filter to a wrapped sprite
  * @param {ShaderSprite} spriteObj
+ * @group Sprite Wrappers
+ * @see {@link createSpriteWithShader}
  */
 function applyShader(spriteObj) {
     var sprite: Sprite = spriteObj.sprite;
@@ -180,6 +186,8 @@ function applyShader(spriteObj) {
 /**
  * Removes and Refreshes the filter to a wrapped sprite
  * @param {FilterSprite} spriteObj
+ * @see createSpriteWithFilter
+ * @group Sprite Wrappers
  */
 function removeFilter(spriteObj) {
     var sprite: Sprite = spriteObj.sprite;
@@ -392,31 +400,33 @@ function addCard(value: Int) {
  * Initializes a deck from a list of actions, this uses some pretty sane defaults, with a `capacity` of 3 and 
  * using the default Ids in the template being the following: `"cards"` for `spriteId` of the cards, 
  * `"cards_cooldown"` for `cooldownOverlayId`,  and `"card_icons"` for `iconsId`
- * @param {Action[]} actions - The array of actions you generated
+ * @param {Action[]} actions - The array of actions you generated using {@link createAction}
  * @param {String} cooldownSoundId
  * @group Exports
+ * @see {@link createAction}
  */
 
 function init(actions: Array<any>, cooldownSoundId: String) {
     var spriteId: String = "cards";
     var cooldownOverlayId: String = "cards_cooldown";
     var iconsId: String = "card_icons";
-    cooldownSound.set(cooldownSoundId);
 
-    initializeDeck(3, actions, spriteId, cooldownOverlayId, iconsId);
+  initializeDeck(3, actions, spriteId, cooldownOverlayId, iconsId, cooldownSoundId);
 }
 
 /**
  * Initializes a deck
  * @param {Int} capacity - deck capacity
- * @param {Action[]} actions - The array of actions you generated
+ * @param {Action[]} actions - The array of actions you generated using {@link createAction}
  * @param {String} spriteId - Id For card sprite
- * @param {String} spriteId - Id the cooldown overlay sprite
- * @param {String} spriteId - Id For icons sprite
+ * @param {String} cooldownOverlayId - Id the cooldown overlay sprite
+ * @param {String} iconsId - Id For icons sprite
  * @param {String} cooldownSoundId - AudioId for sound played upon cooldown end
  * @group Exports
+ * @see {@link createAction}
  */
-function initializeDeck(capacity: Int, actions: Array<any>, spriteId, cooldownOverlayId, iconsId) {
+function initializeDeck(capacity: Int, actions: Array<any>, spriteId: String, cooldownOverlayId: String, iconsId: String, cooldownSoundId: String) {
+    cooldownSound.set(cooldownSoundId);
     var actionList = [];
     for (action in actions) {
         actionList.push(action);
@@ -544,7 +554,8 @@ function hasMatchOrSubstring(arr: Array<String>, target: String) {
 /** 
  * Checks if any item in the array is either equal to or is a subtring of the target
  * @param {ApiVarArray} arr - A Fraymakers API Wrapped array
- * @param target - value to push to the array
+ * @param val - value to push to the array
+ * @group Api Object Helpers  
  */
 function apiArrPush(arr: ApiVarArray, val: any) {
     var temp = arr.get();
@@ -555,6 +566,7 @@ function apiArrPush(arr: ApiVarArray, val: any) {
 /** 
  * Returns the length of the array
  * @param {ApiVarArray} arr - A Fraymakers API Wrapped array
+ * @group Api Object Helpers
  */
 function apiArrLength(arr: ApiVarArray) {
     return arr.get().length;
@@ -564,6 +576,7 @@ function apiArrLength(arr: ApiVarArray) {
  * Pops off the last item of the array
  * @param {ApiVarArray} arr - A Fraymakers API Wrapped array
  * @returns The last item of the array
+ * @group Api Object Helpers
  */
 function apiArrPop(arr: ApiVarArray) {
     var temp = arr.get();
@@ -578,6 +591,7 @@ function apiArrPop(arr: ApiVarArray) {
  * @param {ApiVarArray} arr - A Fraymakers API Wrapped array
  * @param {Int} idx - index
  * @returns The selected item of the array
+ * @group Api Object Helpers
  */
 function apiArrGetIdx(arr: ApiVarArray, idx: Int) {
     var temp = arr.get();
@@ -590,6 +604,7 @@ function apiArrGetIdx(arr: ApiVarArray, idx: Int) {
  * @param {ApiVarArray} arr - A Fraymakers API Wrapped array
  * @param {Int} idx - index
  * @param {Any} item - Item to insert
+ * @group Api Object Helpers
  */
 function apiArrSetIdx(arr: ApiVarArray, idx: Int, item: any) {
     var temp = arr.get();

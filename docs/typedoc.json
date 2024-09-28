@@ -3,14 +3,21 @@
 	"entryPoints": [
 		"./Deck.ts",
 	],
-  "groupOrder": ["Exports", "Variables", "Functions", "*"],
-  "name": "Deck",
-  "out": "deck",
-  "skipErrorChecking": true,
-  "jsDocCompatibility":true,
-  "categorizeByGroup": true,
-  "navigation": {
-	"includeCategories": true,
-	"includeGroups": true
-  }
+	"groupOrder": [
+		"Exports",
+		"*",
+		"Variables",
+		"Functions"
+	],
+	"name": "Deck",
+	"out": "deck",
+	"searchInComments": true,
+	"searchInDocuments": true,
+	"skipErrorChecking": true,
+	"jsDocCompatibility": true,
+	"categorizeByGroup": true,
+	"navigation": {
+		"includeCategories": true,
+		"includeGroups": true
+	}
 }
