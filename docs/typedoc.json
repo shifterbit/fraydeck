@@ -3,9 +3,9 @@
 	"entryPoints": [
 		"./Deck.ts",
 	],
+  "groupOrder": ["Exports", "Variables", "Functions", "*"],
   "name": "Deck",
   "out": "deck",
-  "defaultCategory": "Internal",
   "skipErrorChecking": true,
   "jsDocCompatibility":true,
   "categorizeByGroup": true,
