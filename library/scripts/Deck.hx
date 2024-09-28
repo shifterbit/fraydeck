@@ -83,6 +83,7 @@ var actionable_animations: Array<String> = [
  * @param {Int} cooldownTime - Time in frames for spell cooldown
  * @param {string} icon - The id of the icon displayed
  * @returns {Action} The Action Object
+ * @category Exports
  */
 function createAction(actionFn, predicateFn, cooldownTime: Int, icon: String) {
     return {
@@ -393,6 +394,7 @@ function addCard(value: Int) {
  * `"cards_cooldown"` for `cooldownOverlayId`,  and `"card_icons"` for `iconsId`
  * @param {Action[]} actions - The array of actions you generated
  * @param {String} cooldownSoundId
+ * @category Exports  
  */
 
 function init(actions: Array<any>, cooldownSoundId: String) {
@@ -412,6 +414,7 @@ function init(actions: Array<any>, cooldownSoundId: String) {
  * @param {String} spriteId - Id the cooldown overlay sprite
  * @param {String} spriteId - Id For icons sprite
  * @param {String} cooldownSoundId - AudioId for sound played upon cooldown end
+ * @category Exports
  */
 function initializeDeck(capacity: Int, actions: Array<any>, spriteId, cooldownOverlayId, iconsId) {
     var actionList = [];
