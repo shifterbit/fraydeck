@@ -378,7 +378,8 @@ function addCardEvent(event: GameObjectEvent) {
  * @param {Int} value The card value, usually derived from damage.
  */
 function addCard(value: Int) {
-    var card = value % 10;
+    var card = Math.round(value) % 10;
+
     if (apiArrLength(cards) < deckCapacity.get()) {
         apiArrPush(cards, card);
         var sprite: Sprite = apiArrGetIdx(cardSprites, currCard.get()).sprite;
@@ -411,7 +412,7 @@ function init(actions: Array<any>, cooldownSoundId: String) {
     var cooldownOverlayId: String = "cards_cooldown";
     var iconsId: String = "card_icons";
 
-  initializeDeck(3, actions, spriteId, cooldownOverlayId, iconsId, cooldownSoundId);
+    initializeDeck(3, actions, spriteId, cooldownOverlayId, iconsId, cooldownSoundId);
 }
 
 /**
